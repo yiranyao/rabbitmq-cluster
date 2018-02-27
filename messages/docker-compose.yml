@@ -1,0 +1,31 @@
+version: "3"
+services:
+  consumer1:
+    image: consumer:latest
+    container_name: consumer-1
+    hostname: consumer-1
+    volumes:
+      - ${PWD}/receive.py:/receive.py
+    environment:
+      - BROKER_HOST=rabbit-1
+      - RABBIT_USER=admin
+      - RABBIT_PASS=password
+    networks:
+      - rabbitmq
+
+  producer1:
+    image: producer:latest
+    container_name: producer-1
+    hostname: producer-1
+    volumes:
+      - ${PWD}/send.py:/send.py
+    environment:
+      - BROKER_HOST=rabbit-1
+      - RABBIT_USER=admin
+      - RABBIT_PASS=password
+    networks:
+      - rabbitmq
+
+networks:
+  rabbitmq:
+    driver: bridge

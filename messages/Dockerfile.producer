@@ -1,0 +1,4 @@
+FROM python:latest
+RUN pip install pika
+COPY ./send.py /send.py
+CMD ["/usr/local/bin/python", "-u", "/send.py"]

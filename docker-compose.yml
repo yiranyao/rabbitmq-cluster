@@ -1,0 +1,56 @@
+version: "3"
+services:
+  rabbit-web:
+    image: rabbitmq:management
+    container_name: rabbit-web
+    hostname: rabbit-web
+    volumes:
+      - ${PWD}/rabbitmq_mgmt.conf:/etc/rabbitmq/rabbitmq.conf
+      - ${PWD}/rabbitmq_def.json:/etc/rabbitmq/rabbitmq_def.json
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'MNOOMFEXVVBGMSTXAQAG'
+    networks:
+      - rabbitmq
+    ports:
+      - "8080:15672"
+
+  rabbit1:
+    image: rabbitmq:latest
+    container_name: rabbit-1
+    hostname: rabbit-1
+    volumes:
+      - ${PWD}/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'MNOOMFEXVVBGMSTXAQAG'
+    networks:
+      - rabbitmq
+
+  rabbit2:
+    image: rabbitmq:latest
+    container_name: rabbit-2
+    hostname: rabbit-2
+    depends_on:
+      - rabbit1
+    volumes:
+      - ${PWD}/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'MNOOMFEXVVBGMSTXAQAG'
+    networks:
+      - rabbitmq
+
+  rabbit3:
+    image: rabbitmq:latest
+    container_name: rabbit-3
+    hostname: rabbit-3
+    depends_on:
+      - rabbit1
+    volumes:
+      - ${PWD}/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'MNOOMFEXVVBGMSTXAQAG'
+    networks:
+      - rabbitmq
+
+networks:
+  rabbitmq:
+    driver: bridge

@@ -1,0 +1,4 @@
+FROM python:latest
+RUN pip install pika
+COPY ./receive.py /receive.py
+CMD ["/usr/local/bin/python", "-u", "/receive.py"]
